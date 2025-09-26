@@ -1,0 +1,1 @@
+This repository is the collection of games made with python programming language.
