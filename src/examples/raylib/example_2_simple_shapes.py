@@ -42,3 +42,5 @@ if __name__ == '__main__':
         pyray.draw_text_ex(font, 'Text 2 with custom font', pyray.Vector2(0, 600), 20, 0, pyray.BLUE)
 
         pyray.end_drawing()
+
+    pyray.close_window()
