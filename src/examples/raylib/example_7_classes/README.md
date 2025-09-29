@@ -1,0 +1,1 @@
+This directory is a very good example of how to develop a game in a OOP manner in raylib and python.
