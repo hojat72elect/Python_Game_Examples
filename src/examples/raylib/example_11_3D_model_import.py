@@ -1,7 +1,6 @@
 from pyray import init_window, load_model, window_should_close, get_frame_time, begin_drawing, clear_background, \
-    begin_mode_3d, draw_grid, draw_model_ex, end_mode_3d, end_drawing, close_window, Camera3D, Vector3
-
-from raylib import *
+    begin_mode_3d, draw_grid, draw_model_ex, end_mode_3d, end_drawing, close_window, Camera3D, Vector3, WHITE
+from raylib import CAMERA_PERSPECTIVE
 
 init_window(1920, 1080, "3D imports")
 camera = Camera3D()
