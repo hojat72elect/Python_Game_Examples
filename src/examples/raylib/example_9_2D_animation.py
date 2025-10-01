@@ -1,14 +1,15 @@
 from pyray import load_texture, draw_texture, WHITE, init_window, window_should_close, get_frame_time, begin_drawing, \
-    clear_background, BLACK, end_drawing, close_window
+    clear_background, BLACK, end_drawing, close_window, Texture
 from os.path import join
+
 
 class AnimatedSprite:
     def __init__(self):
-        self.animation_frames = [load_texture(join('../../assets', 'animation1', f'{i}.png')) for i in range(8)]
-        self.animation_index, self.animation_speed = 0, 10
+        self.animation_frames: list[Texture] = [load_texture(join('../../assets', 'animation1', f'{i}.png')) for i in range(8)]
+        self.animation_index: int = 0
+        self.animation_speed: int = 10
 
-    def update(self):
-        dt = get_frame_time()
+    def update(self, dt):
         self.animation_index += self.animation_speed * dt
 
     def draw(self):
@@ -20,7 +21,12 @@ if __name__ == '__main__':
     animated_sprite = AnimatedSprite()
 
     while not window_should_close():
-        animated_sprite.update()
+        '''
+        delta time should always be defined in your launcher code and then be propagated
+         to the underlying source code from there. 
+        '''
+        delta_time:float = get_frame_time()
+        animated_sprite.update(delta_time)
 
         begin_drawing()
         clear_background(BLACK)
