@@ -28,7 +28,7 @@ if __name__ == '__main__':
     # Create an Image, extract a texture out of it, and apply that texture as the surface material of the model
     image = gen_image_gradient_linear(20, 20, 1, RED, YELLOW)
     texture = load_texture_from_image(image)
-    set_material_texture(cylinder_model.materials[0], MATERIAL_MAP_ALBEDO, texture)
+    set_material_texture(cube_model.materials[0], MATERIAL_MAP_ALBEDO, texture)
 
     # position and angle of the model in our world.
     model_position = Vector3()
@@ -38,14 +38,14 @@ if __name__ == '__main__':
 
         dt = get_frame_time()
         model_rotation += 4 * dt
-        cylinder_model.transform = matrix_rotate_x(model_rotation)
+        cube_model.transform = matrix_rotate_x(model_rotation)
 
         clear_background(WHITE)
         begin_drawing()
 
         begin_mode_3d(camera)
         draw_grid(10, 0.5)
-        draw_model(cylinder_model, model_position, 1, WHITE)
+        draw_model(cube_model, model_position, 1, WHITE)
         draw_line_3d(Vector3(-4, 0, -2), Vector3(5, 2, 3), BLACK)
         end_mode_3d()
 
