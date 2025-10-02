@@ -54,8 +54,27 @@ while not window_should_close():
 
     # movement & collision
     dt = get_frame_time()
+
     pos.x += direction.x * speed * dt
-    check_collision('x')
+    # first usage of function.
+    bounding_box1_x = get_mesh_bounding_box(player.meshes[0])
+    min_boundary1_x = Vector3Add(pos, bounding_box1_x.min)
+    max_boundary1_x = Vector3Add(pos, bounding_box1_x.max)
+    player_bbox_x = BoundingBox(min_boundary1_x, max_boundary1_x)
+
+    # second usage of function
+    bounding_box2_x = get_mesh_bounding_box(obstacle.meshes[0])
+    min_boundary2_x = Vector3Add(obstacle_pos, bounding_box2_x.min)
+    max_boundary2_x = Vector3Add(obstacle_pos, bounding_box2_x.max)
+    boundary_bbox_x = BoundingBox(min_boundary2_x, max_boundary2_x)
+
+    if check_collision_boxes(player_bbox_x, boundary_bbox_x):
+        if direction.x > 0:
+            pos.x = boundary_bbox_x.min.x - 0.5001
+        if direction.x < 0:
+            pos.x = boundary_bbox_x.max.x + 0.5001
+
+
     pos.z += direction.z * speed * dt
     check_collision('z')
 
