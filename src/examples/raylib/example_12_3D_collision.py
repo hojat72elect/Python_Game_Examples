@@ -4,14 +4,6 @@ from pyray import get_mesh_bounding_box, check_collision_boxes, init_window, loa
 
 from raylib import Vector3Add, CAMERA_PERSPECTIVE, KEY_RIGHT, KEY_LEFT, KEY_DOWN, KEY_UP
 
-
-def get_bounding_box(model, pos):
-    bounding_box = get_mesh_bounding_box(model.meshes[0])
-    min_boundary = Vector3Add(pos, bounding_box.min)
-    max_boundary = Vector3Add(pos, bounding_box.max)
-    return BoundingBox(min_boundary, max_boundary)
-
-
 def check_collision(axis):
     # first usage of function.
     bounding_box1 = get_mesh_bounding_box(player.meshes[0])
@@ -79,7 +71,11 @@ while not window_should_close():
     draw_grid(10, 1)
     draw_model(player, pos, 1.0, RED)
     draw_model(obstacle, obstacle_pos, 1.0, GRAY)
-    draw_bounding_box(get_bounding_box(player, pos), GREEN)
+    bounding_box = get_mesh_bounding_box(player.meshes[0])
+    min_boundary = Vector3Add(pos, bounding_box.min)
+    max_boundary = Vector3Add(pos, bounding_box.max)
+    resulting_bounding_box = BoundingBox(min_boundary, max_boundary)
+    draw_bounding_box(resulting_bounding_box, GREEN)
     end_mode_3d()
     end_drawing()
 close_window()
