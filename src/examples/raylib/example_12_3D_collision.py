@@ -13,7 +13,12 @@ def get_bounding_box(model, pos):
 
 
 def check_collision(axis):
-    player_bbox = get_bounding_box(player, pos)
+    # first usage of function.
+    bounding_box1 = get_mesh_bounding_box(player.meshes[0])
+    min_boundary1 = Vector3Add(pos, bounding_box1.min)
+    max_boundary1 = Vector3Add(pos, bounding_box1.max)
+    player_bbox = BoundingBox(min_boundary1, max_boundary1)
+
     boundary_bbox = get_bounding_box(obstacle, obstacle_pos)
     if check_collision_boxes(player_bbox, boundary_bbox):
         if axis == 'x':
