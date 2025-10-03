@@ -1,34 +1,8 @@
 from pyray import get_mesh_bounding_box, check_collision_boxes, init_window, load_model_from_mesh, gen_mesh_cube, \
     window_should_close, is_key_down, begin_drawing, clear_background, begin_mode_3d, draw_grid, draw_model, \
-    draw_bounding_box, get_frame_time, end_mode_3d, end_drawing, close_window, BoundingBox, Camera3D, Vector3, WHITE, RED, GRAY, GREEN
-
+    draw_bounding_box, get_frame_time, end_mode_3d, end_drawing, close_window, BoundingBox, Camera3D, Vector3, WHITE, \
+    RED, GRAY, GREEN
 from raylib import Vector3Add, CAMERA_PERSPECTIVE, KEY_RIGHT, KEY_LEFT, KEY_DOWN, KEY_UP
-
-def check_collision(axis):
-    # first usage of function.
-    bounding_box1 = get_mesh_bounding_box(player.meshes[0])
-    min_boundary1 = Vector3Add(pos, bounding_box1.min)
-    max_boundary1 = Vector3Add(pos, bounding_box1.max)
-    player_bbox = BoundingBox(min_boundary1, max_boundary1)
-
-    # second usage of function
-    bounding_box2 = get_mesh_bounding_box(obstacle.meshes[0])
-    min_boundary2 = Vector3Add(obstacle_pos, bounding_box2.min)
-    max_boundary2 = Vector3Add(obstacle_pos, bounding_box2.max)
-    boundary_bbox = BoundingBox(min_boundary2, max_boundary2)
-
-    if check_collision_boxes(player_bbox, boundary_bbox):
-        if axis == 'x':
-            if direction.x > 0:
-                pos.x = boundary_bbox.min.x - 0.5001
-            if direction.x < 0:
-                pos.x = boundary_bbox.max.x + 0.5001
-        if axis == 'z':
-            if direction.z > 0:
-                pos.z = boundary_bbox.min.z - 0.5001
-            if direction.z < 0:
-                pos.z = boundary_bbox.max.z + 0.5001
-
 
 init_window(1920, 1080, "3D collisions")
 camera = Camera3D()
@@ -74,9 +48,24 @@ while not window_should_close():
         if direction.x < 0:
             pos.x = boundary_bbox_x.max.x + 0.5001
 
-
     pos.z += direction.z * speed * dt
-    check_collision('z')
+    # first usage of function.
+    bounding_box1_z = get_mesh_bounding_box(player.meshes[0])
+    min_boundary1_z = Vector3Add(pos, bounding_box1_z.min)
+    max_boundary1_z = Vector3Add(pos, bounding_box1_z.max)
+    player_bbox_z = BoundingBox(min_boundary1_z, max_boundary1_z)
+
+    # second usage of function
+    bounding_box2_z = get_mesh_bounding_box(obstacle.meshes[0])
+    min_boundary2_z = Vector3Add(obstacle_pos, bounding_box2_z.min)
+    max_boundary2_z = Vector3Add(obstacle_pos, bounding_box2_z.max)
+    boundary_bbox_z = BoundingBox(min_boundary2_z, max_boundary2_z)
+
+    if check_collision_boxes(player_bbox_z, boundary_bbox_z):
+        if direction.z > 0:
+            pos.z = boundary_bbox_z.min.z - 0.5001
+        if direction.z < 0:
+            pos.z = boundary_bbox_z.max.z + 0.5001
 
     # collision check
     # print(check_collision_spheres(pos, 0.5, obstacle_pos, 2))
