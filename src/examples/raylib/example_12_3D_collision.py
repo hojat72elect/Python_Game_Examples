@@ -21,7 +21,7 @@ if __name__ == '__main__':
     player_model = load_model_from_mesh(gen_mesh_cube(1, 1, 1))
     player_position = Vector3()
     player_direction = Vector3()
-    player_speed = 5
+    PLAYER_SPEED = 5
     player_bounding_box = get_mesh_bounding_box(player_model.meshes[0])
 
     # Set up the obstacle properties
@@ -35,31 +35,35 @@ if __name__ == '__main__':
         player_direction.z = int(is_key_down(KEY_DOWN)) - int(is_key_down(KEY_UP))
 
         delta_time = get_frame_time()
-        player_position.x += player_direction.x * (player_speed * delta_time)
 
+        # Update player's position and its physical bounding box
+        player_position.x += player_direction.x * (PLAYER_SPEED * delta_time)
         player_bounding_box = get_mesh_bounding_box(player_model.meshes[0])
-        min_boundary1_x = Vector3Add(player_position, player_bounding_box.min)
-        max_boundary1_x = Vector3Add(player_position, player_bounding_box.max)
-        player_bbox_x = BoundingBox(min_boundary1_x, max_boundary1_x)
+        player_min_boundary = Vector3Add(player_position, player_bounding_box.min)
+        player_max_boundary = Vector3Add(player_position, player_bounding_box.max)
+        # Other 3D stuff's collision with the player is shown in this object.
+        player_collision_box = BoundingBox(player_min_boundary, player_max_boundary)
 
-        # second usage of function
-        bounding_box2_x = get_mesh_bounding_box(obstacle_model.meshes[0])
-        min_boundary2_x = Vector3Add(obstacle_position, bounding_box2_x.min)
-        max_boundary2_x = Vector3Add(obstacle_position, bounding_box2_x.max)
-        boundary_bbox_x = BoundingBox(min_boundary2_x, max_boundary2_x)
+        # obstacle's physical bounding box
+        obstacle_bounding_box = get_mesh_bounding_box(obstacle_model.meshes[0])
+        obstacle_min_boundary = Vector3Add(obstacle_position, obstacle_bounding_box.min)
+        obstacle_max_boundary = Vector3Add(obstacle_position, obstacle_bounding_box.max)
+        # Other 3D stuff's collision with the obstacle is shown in this object.
+        obstacle_collision_box = BoundingBox(obstacle_min_boundary, obstacle_max_boundary)
 
-        if check_collision_boxes(player_bbox_x, boundary_bbox_x):
+        # Check if a collision has happened between player and obstacle
+        if check_collision_boxes(player_collision_box, obstacle_collision_box):
             if player_direction.x > 0:
-                player_position.x = boundary_bbox_x.min.x - 0.5001
+                player_position.x = obstacle_collision_box.min.x - 0.5001
             if player_direction.x < 0:
-                player_position.x = boundary_bbox_x.max.x + 0.5001
+                player_position.x = obstacle_collision_box.max.x + 0.5001
 
-        player_position.z += player_direction.z * player_speed * delta_time
+        player_position.z += player_direction.z * (PLAYER_SPEED * delta_time)
         # first usage of function.
         player_bounding_box = get_mesh_bounding_box(player_model.meshes[0])
-        min_boundary1_z = Vector3Add(player_position, player_bounding_box.min)
-        max_boundary1_z = Vector3Add(player_position, player_bounding_box.max)
-        player_bbox_z = BoundingBox(min_boundary1_z, max_boundary1_z)
+        player_min_boundary = Vector3Add(player_position, player_bounding_box.min)
+        player_max_boundary = Vector3Add(player_position, player_bounding_box.max)
+        player_bbox_z = BoundingBox(player_min_boundary, player_max_boundary)
 
         # second usage of function
         bounding_box2_z = get_mesh_bounding_box(obstacle_model.meshes[0])
@@ -81,9 +85,9 @@ if __name__ == '__main__':
         draw_model(player_model, player_position, 1.0, RED)
         draw_model(obstacle_model, obstacle_position, 1.0, GRAY)
         player_bounding_box = get_mesh_bounding_box(player_model.meshes[0])
-        min_boundary = Vector3Add(player_position, player_bounding_box.min)
-        max_boundary = Vector3Add(player_position, player_bounding_box.max)
-        resulting_bounding_box = BoundingBox(min_boundary, max_boundary)
+        player_min_boundary = Vector3Add(player_position, player_bounding_box.min)
+        player_max_boundary = Vector3Add(player_position, player_bounding_box.max)
+        resulting_bounding_box = BoundingBox(player_min_boundary, player_max_boundary)
         draw_bounding_box(resulting_bounding_box, GREEN)
         end_mode_3d()
         end_drawing()
